@@ -1,9 +1,9 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>Jeremiah's Jump Adventure!</title>
 <meta property="og:title" content="Jeremiah's Jump Adventure!">
-<meta property="og:description" content="Run, jump, bonk star blocks and bounce on silly blobs! Reach the flag to win.">
+<meta property="og:description" content="Run, jump, bonk star blocks and bounce on silly blobs! Play as a red-and-white jumping hero! Reach the flag to win.">
 <meta property="og:type" content="website">
-<meta name="description" content="Run, jump, bonk star blocks and bounce on silly blobs! Reach the flag to win.">
+<meta name="description" content="Run, jump, bonk star blocks and bounce on silly blobs! Play as a red-and-white jumping hero! Reach the flag to win.">
 <meta name="theme-color" content="#5b1a8f">
 <style>html,body{margin:0;height:100%;overflow:hidden;background:#2a0845;touch-action:none;font-family:Arial,sans-serif;overscroll-behavior:none}
 canvas{display:block;width:100vw;height:100vh}
@@ -88,11 +88,22 @@ const vw=W/S;cam=Math.max(0,Math.min(mw-vw,P.x-vw*.4))}
 function star(cx,cy,r,c){x.fillStyle=c;x.beginPath();for(let i=0;i<10;i++){const a=i*Math.PI/5-Math.PI/2,rr=i%2?r*.45:r;x.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr)}x.fill()}
 function txt(t,X,Y,sz,c='#7fff00',al='center'){x.font='bold '+sz+'px Arial';x.textAlign=al;x.fillStyle='#2a0845';x.fillText(t,X+3,Y+3);x.fillStyle=c;x.fillText(t,X,Y)}
 function hero(px,py,f){x.save();x.translate(px+14,py);x.scale(f,1);
-x.fillStyle='#9b30d9';x.fillRect(-12,-6,24,8);x.fillRect(-12,-10,16,6);// cap
-x.fillStyle='#7fff00';x.beginPath();x.arc(0,8,11,0,7);x.fill();// head
+const l=P&&P.on&&P.vx?Math.sin(tick/3)*4:0;
+x.fillStyle='#e01e1e';x.fillRect(-10,18,20,10);// red shirt
+x.fillRect(-14,19,4,8);x.fillRect(10,19,4,8);// red arms
+x.fillStyle='#fff';x.fillRect(-15,26,6,5);x.fillRect(9,26,6,5);// white gloves
+x.fillStyle='#e01e1e';x.fillRect(-10,26,20,7);// red overalls
+x.fillStyle='#fff';x.fillRect(-7,18,3,10);x.fillRect(4,18,3,10);x.fillRect(-10,30,20,2);// white straps + stripe
+x.fillStyle='#ffd700';x.fillRect(-6,25,2,2);x.fillRect(4,25,2,2);// buttons
+x.fillStyle='#fff';x.fillRect(-9,33,7,4+l);x.fillRect(2,33,7,4-l);// white boots
+x.fillStyle='#b5651d';x.fillRect(-9,36+l,7,2);x.fillRect(2,36-l,7,2);
+x.fillStyle='#ffcc99';x.beginPath();x.arc(0,8,11,0,7);x.fill();// friendly face
 x.fillStyle='#fff';x.fillRect(3,4,5,5);x.fillStyle='#000';x.fillRect(5,5,3,3);
-x.fillStyle='#3cb93c';x.fillRect(-10,18,20,12);x.fillStyle='#9b30d9';x.fillRect(-10,28,20,4);
-const l=P&&P.on&&P.vx?Math.sin(tick/3)*4:0;x.fillStyle='#5b1a8f';x.fillRect(-9,32+0,7,4+l);x.fillRect(2,32,7,4-l);x.restore()}
+x.fillStyle='#7a3b10';x.fillRect(2,12,8,2);// smile/mustache
+x.fillStyle='#e01e1e';x.fillRect(-12,-6,24,8);x.fillRect(-12,-10,18,6);// red cap
+x.fillStyle='#fff';x.fillRect(4,0,12,3);// white brim
+x.beginPath();x.arc(-2,-3,4,0,7);x.fill();x.fillStyle='#e01e1e';x.font='bold 7px sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('★',-2,-3);// star badge
+x.restore()}
 function draw(){x.setTransform(1,0,0,1,0,0);const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#5b1a8f');g.addColorStop(1,'#c37be8');x.fillStyle=g;x.fillRect(0,0,W,H);
 x.setTransform(S,0,0,S,0,0);const vw=W/S;
 // hills
