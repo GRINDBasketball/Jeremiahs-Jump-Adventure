@@ -43,7 +43,7 @@ else if(c=='o')coins.push({x:X+T/2,y:Y+T/2});
 else if(c=='E')ens.push({k:'c',x:X+3,y:Y+T-34,w:34,h:34,vx:-1,vy:0,dead:0,e:1});
 else if(c=='Z')ens.push({k:'z',x:X+5,y:Y+T-44,w:30,h:44,vx:-1.3,vy:0,dead:0,e:1});
 else if(c=='R')shrooms.push({x:X+T/2,y:Y+T,t:(i*41)%220,d:1});
-else if(c=='K')boss={x:X,y:Y+T-76,w:64,h:76,vx:-1.2,vy:0,hp:6,hit:0,st:'idle',t:0,t2:0,on:0,e:1,face:-1,minX:54*T,maxX:62*T-64,hole:[]};
+else if(c=='K')boss={x:X,y:Y+T-57,w:48,h:57,vx:-1.2,vy:0,hp:6,hit:0,st:'idle',t:0,t2:0,on:0,e:1,face:-1,minX:54*T,maxX:62*T-48,hole:[]};
 else if(c=='Q')prin={x:X+5,y:Y+T-46,w:30,h:46};
 else if(c=='F')flagX=X;else if(c=='P')P0={x:X,y:Y+T-36}}));
 for(const s of shrooms){const i=Math.floor(s.x/T);s.d=tiles[(i+1)+',10']=='L'?1:-1}
@@ -62,7 +62,7 @@ function pop(cx,y,n){for(let i=0;i<n;i++)fc.push({x:cx-8,y:y-18,w:16,h:16,vx:(i-
 function kill(e,fire){e.dead=1;e.fire=fire;if(fire){e.vy=-6;score+=2;pop(e.x+e.w/2,e.y,3)}else{score+=3;bp(660,.08);bp(880,.12)}}
 function grow(){score+=5;if(!P.big){P.big=1;P.y-=14;P.h=50;msg='SUPER BIG!';msgT=80}tune([392,523,659,784,1047],70)}
 function shrink(){P.big=0;P.y+=14;P.h=36;tune([784,523,392],80)}
-function hurt(){if(inv||st!='play')return;inv=100;if(P.big){shrink();return}lives--;P.vy=-6;bp(300,.2);setTimeout(()=>bp(200,.3),150);if(lives<=0)gameOver()}
+function hurt(){if(inv||st!='play')return;inv=lvl==4?140:100;if(P.big){shrink();return}lives--;P.vy=-6;bp(300,.2);setTimeout(()=>bp(200,.3),150);if(lives<=0)gameOver()}
 function fall(){lives--;if(P.big){P.big=0;P.h=36}bp(300,.2);setTimeout(()=>bp(200,.3),150);if(lives<=0)return gameOver();P.x=safe.x;P.y=safe.fy-P.h;P.vx=P.vy=0;inv=100}
 function shoot(){fcd=16;fbs.push({x:P.x+P.w/2+P.face*16,y:P.y+P.h*.5,vx:7.5*P.face,vy:1.5,t:0,r:7});bp(1200,.06,'sawtooth',.05);setTimeout(()=>bp(800,.06,'sawtooth',.05),40)}
 function hitBoss(){const b=boss;if(b.hit||b.st=='fall')return;if(b.st=='idle')b.st='fight';b.hp--;b.hit=35;score+=5;bp(140,.25,'sawtooth',.1);
@@ -72,7 +72,7 @@ function plantBox(p){return{x:p.cx-15,y:p.by-p.r*50,w:30,h:p.r*50}}
 function showB(t){eb.textContent=t;eb.style.display='block'}function hideB(){eb.style.display='none'}
 function toMap(){st='map';showB('GO!')}
 function newGame(){lvl=0;score=0;toMap()}
-function startLevel(n){lvl=n;lives=3;lvlScore=score;load(n);st='play';hideB();K.l=K.r=K.j=K.f=0;msg=n==4?'Beat King Scorch!':LVN[n];msgT=120}
+function startLevel(n){lvl=n;lives=n==4?5:3;lvlScore=score;load(n);st='play';hideB();K.l=K.r=K.j=K.f=0;msg=n==4?'Beat King Scorch!':LVN[n];msgT=120}
 function clearLevel(){st='clear';ct=0;score+=10;tune([523,659,784,1047,1319])}
 function gameOver(){st='over';tune([392,330,262,196]);showB('TRY AGAIN')}
 function startEnding(){st='ending';et=0;score+=100;tune([523,659,784,1047,784,880,1047,1319],140)}
@@ -108,7 +108,7 @@ if(boss){const b=boss;b.t++;if(b.hit>0)b.hit--;
 if(b.st=='idle'&&P.x>b.x-560){b.st='fight';msg='KING SCORCH!';msgT=120;bp(110,.5,'sawtooth',.1)}
 if(b.st=='fight'){b.vy=Math.min(b.vy+.5,12);if(b.x<b.minX)b.vx=Math.abs(b.vx);if(b.x>b.maxX)b.vx=-Math.abs(b.vx);if(b.on&&b.t%150==75)b.vy=-9;
 hit(b,b.vx,0);hit(b,0,b.vy);b.face=P.x<b.x?-1:1;
-if(b.t%130==0){breath.push({x:b.face<0?b.x-24:b.x+b.w+2,y:b.y+44,vx:3.2*b.face,w:22,h:14,t:0});bp(180,.3,'sawtooth',.06)}
+if(b.t%230==0){breath.push({x:b.face<0?b.x-24:b.x+b.w+2,y:b.y+33,vx:2.2*b.face,w:22,h:14,t:0});bp(180,.3,'sawtooth',.06)}
 if(ov(P,b)){if(P.vy>0&&P.y+P.h-b.y<26){P.vy=-13;hitBoss()}else hurt()}}
 else if(b.st=='fall'){b.t2++;
 if(b.t2==45){const i0=Math.floor(b.x/T)-1,i1=Math.floor((b.x+b.w-1)/T)+1;for(let i=i0;i<=i1;i++)if(tiles[i+',10']=='b'&&!(P.x<(i+1)*T&&P.x+P.w>i*T)){delete tiles[i+',10'];b.hole.push(i)}bp(200,.4,'sawtooth',.08)}
@@ -193,7 +193,7 @@ for(let k=0;k<3;k++){const yy=m.y-52+((tick*2+k*25)%75);circ(m.x+m.d*30,yy,4,'#f
 x.fillStyle='#e0301e';x.beginPath();x.ellipse(m.x,m.y-52,36,26,0,Math.PI,0);x.fill();x.fillRect(m.x-36,m.y-54,72,5);
 circ(m.x-16,m.y-62,6,'#ffb000');circ(m.x+12,m.y-66,7,'#ffb000');circ(m.x+26,m.y-56,4,'#ffb000');
 for(let k=-1;k<=1;k++){const h=14+Math.sin(tick/3+k*2)*6;x.fillStyle=k?'#ff8a00':'#ffd000';x.beginPath();x.moveTo(m.x+k*14-8,m.y-74);x.lineTo(m.x+k*14,m.y-74-h);x.lineTo(m.x+k*14+8,m.y-74);x.fill()}}
-function scorch(b){const f=b.face,cx=b.x+b.w/2,fy=b.y+b.h;x.save();x.translate(cx,fy);x.scale(f,1);if(b.st=='fall'&&b.t2<45)x.translate(Math.sin(tick)*3,0);
+function scorch(b){const f=b.face,cx=b.x+b.w/2,fy=b.y+b.h;x.save();x.translate(cx,fy);x.scale(f*.75,.75);if(b.st=='fall'&&b.t2<45)x.translate(Math.sin(tick)*3,0);
 if(b.hit&&b.hit%6<3)x.globalAlpha=.45;
 x.fillStyle='#ff6a00';x.beginPath();x.moveTo(-26,-18);x.lineTo(-48,-6+Math.sin(tick/4)*4);x.lineTo(-26,-6);x.fill();star(-48,-6,6,'#ffd000');
 x.fillStyle='#c0461b';x.fillRect(-20,-14,14,14);x.fillRect(6,-14,14,14);x.fillStyle='#fff';x.fillRect(-20,-3,4,3);x.fillRect(14,-3,4,3);
@@ -237,7 +237,7 @@ else if(c=='b'){x.fillStyle='#8a5a2b';x.fillRect(X,Y,T,14);x.strokeStyle='#4a2a1
 else if(c=='H'){x.fillStyle='#ffcf3a';x.fillRect(X,Y,T,T);x.strokeStyle='#a87a00';x.lineWidth=3;x.strokeRect(X+1.5,Y+1.5,T-3,T-3);star(X+T/2,Y+T/2,10,'#fff6c0')}
 else if(c=='g'){x.strokeStyle='#777';x.lineWidth=4;for(let k=6;k<T;k+=12){x.beginPath();x.moveTo(X+k,Y);x.lineTo(X+k,Y+T);x.stroke()}x.fillStyle='#555';x.fillRect(X,Y+T/2-2,T,4)}
 else if(c=='L'){const top=tiles[i+','+(j-1)]!='L';x.fillStyle='#e83a00';x.fillRect(X,Y+(top?6:0),T,T-(top?6:0));if(top){x.fillStyle='#ffb000';for(let k=0;k<4;k++){const h=4+Math.sin(tick/8+i*2+k)*3;x.fillRect(X+k*10,Y+6-h,10,h+3)}}else{x.fillStyle='#ff6a00';x.fillRect(X+((tick+i*13)%30),Y+10,8,4)}}}
-function hud(){const vw=W/S;txt(nm_()+'  ★ '+score,14,34,26,'#fff','left');for(let i=0;i<3;i++)heart(vw-30-i*34,24,12,i<lives?'#ff4fa0':'rgba(255,255,255,.35)');
+function hud(){const vw=W/S;txt(nm_()+'  ★ '+score,14,34,26,'#fff','left');for(let i=0;i<(lvl==4?5:3);i++)heart(vw-30-i*34,24,12,i<lives?'#ff4fa0':'rgba(255,255,255,.35)');
 txt(LVN[lvl],vw/2,34,22,lvl==4?'#ff9a1f':'#7fff00');
 if(boss&&boss.st=='fight'){txt('KING SCORCH',vw/2,62,18,'#ff9a1f');x.fillStyle='#2a0845';x.fillRect(vw/2-92,68,184,14);for(let i=0;i<6;i++){x.fillStyle=i<boss.hp?'#ff5a00':'#555';x.fillRect(vw/2-90+i*30,70,28,10)}}
 if(msgT>0)txt(msg,vw/2,120,32,'#ffd700')}
